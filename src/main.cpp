@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include "board.h"
 
 using namespace std;
 
@@ -73,7 +74,6 @@ void ReadFile(string filename, int &rowLength, int &columnLength, vector<vector<
 int main(int argc, char *argv[])
 {
     Arguments a(argc, argv);
-    string puzzleString;
 
     int rowLength = 0;
     int columnLength = 0;
@@ -84,5 +84,15 @@ int main(int argc, char *argv[])
 
     ReadFile(puzzleFile, rowLength, columnLength, rowClues, columnClues);
 
+    string puzzleString = string(rowLength * columnLength, '.');
+
+    bool preprocess = a.GetArg<bool>("preprocess", true);
+
+    if (preprocess)
+    {
+        Board board;
+        puzzleString = board.PreProcessBoard(rowLength, columnLength, rowClues, columnClues);
+    }
+    cout << "Puzzle String: " << puzzleString << endl;
     return 0;
 }
